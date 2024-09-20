@@ -6,9 +6,9 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
-JVM_SUBDIR:aarch64 = "jdk-17.0.9+9-jre"
-JVM_CHECKSUM:aarch64 = "05b192f81ed478178ba953a2a779b67fc5a810acadb633ad69f8c4412399edb8"
-JVM_RDEPENDS:aarch64 = " \
+JVM_SUBDIR_aarch64 = "jdk-17.0.9+9-jre"
+JVM_CHECKSUM_aarch64 = "05b192f81ed478178ba953a2a779b67fc5a810acadb633ad69f8c4412399edb8"
+JVM_RDEPENDS_aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
   glibc (>= 2.17) \
@@ -19,9 +19,9 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_SUBDIR:arm = "jdk-17.0.9+9-jre"
-JVM_CHECKSUM:arm = "5ae1f8cae358e41083a6b44f53c6f0daeb657f83c293da6c8733f68278e13703"
-JVM_RDEPENDS:arm = " \
+JVM_SUBDIR_arm = "jdk-17.0.9+9-jre"
+JVM_CHECKSUM_arm = "5ae1f8cae358e41083a6b44f53c6f0daeb657f83c293da6c8733f68278e13703"
+JVM_RDEPENDS_arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
   glibc (>= 2.17) \
@@ -33,9 +33,9 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_SUBDIR:x86_64 = "jdk-17.0.9+9-jre"
-JVM_CHECKSUM:x86_64 = "c37f729200b572884b8f8e157852c739be728d61d9a1da0f920104876d324733"
-JVM_RDEPENDS:x86_64 = " \
+JVM_SUBDIR_x86_64 = "jdk-17.0.9+9-jre"
+JVM_CHECKSUM_x86_64 = "c37f729200b572884b8f8e157852c739be728d61d9a1da0f920104876d324733"
+JVM_RDEPENDS_x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
   glibc (>= 2.17) \
@@ -47,13 +47,13 @@ JVM_RDEPENDS:x86_64 = " \
   zlib (>= 1.2) \
 "
 
-RDEPENDS:${PN} = "${JVM_RDEPENDS}"
+RDEPENDS_${PN} = "${JVM_RDEPENDS}"
 
 API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
-API_ARCH:aarch64 = "aarch64"
-API_ARCH:arm = "arm"
-API_ARCH:x86_64 = "x64"
+API_ARCH_aarch64 = "aarch64"
+API_ARCH_arm = "arm"
+API_ARCH_x86_64 = "x64"
 API_IMAGE_TYPE = "jre"
 API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
@@ -68,7 +68,7 @@ libdir_jre = "${libdir}/jvm/openjdk-17-jre"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
-INSANE_SKIP:${PN} = "ldflags"
+INSANE_SKIP_${PN} = "ldflags"
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
@@ -78,7 +78,7 @@ SOLIBS = ".so"
 FILES_SOLIBSDEV = ""
 
 # Ignore QA Issue: non -dev/-dbg/nativesdk- package
-INSANE_SKIP:${PN}:append = " dev-so"
+INSANE_SKIP_${PN}_append = " dev-so"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -87,12 +87,12 @@ do_install() {
   cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jre}
 }
 
-RPROVIDES:${PN} = "java2-runtime"
-FILES:${PN} = "${libdir_jre}"
+RPROVIDES_${PN} = "java2-runtime"
+FILES_${PN} = "${libdir_jre}"
 
 inherit update-alternatives
 ALTERNATIVE_PRIORITY = "100"
-ALTERNATIVE:${PN} = "java keytool"
+ALTERNATIVE_${PN} = "java keytool"
 ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
 ALTERNATIVE_TARGET[java] = "${libdir_jre}/bin/java"
 ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
